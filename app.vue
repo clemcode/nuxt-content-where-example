@@ -1,23 +1,29 @@
 <script setup>
+/* Works fine */
 const { data: directorQuery } = await useAsyncData('director', () => {
-  return queryContent('/').where({ director: 'Hayao Miyazaki' }).find()
-})
+  return queryContent('/').where({ director: 'Hayao Miyazaki' }).find();
+});
 
+/* Does not work, even though `release_date` exists (tried with $gt and $lt as well)*/
 const { data: yearQuery } = await useAsyncData('year', () => {
-  return queryContent('/').where({ release_date: { $lte: 1997 } }).find()
-})
+  return queryContent('/')
+    .where({ release_date: { $lte: 1997 } })
+    .find();
+});
 
-console.log(directorQuery.value)
+console.log(yearQuery.value);
 </script>
 
 <template>
   <NuxtExampleLayout example="queries/where" repo="nuxt/content">
-    <template #icon>
-      Nuxt/content
-    </template>
+    <template #icon> Nuxt/content </template>
     <header class="text-left">
-      <p>The dataset in the <code class="inline">content/index.json</code> lists movies from Studio Ghibli. It is based on the <a href="https://ghibliapi.herokuapp.com/">Ghibli API</a></p>
-      <hr class="m-2">
+      <p>
+        The dataset in the <code class="inline">content/index.json</code> lists
+        movies from Studio Ghibli. It is based on the
+        <a href="https://ghibliapi.herokuapp.com/">Ghibli API</a>
+      </p>
+      <hr class="m-2" />
     </header>
     <main>
       <section>
